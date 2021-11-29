@@ -16,7 +16,7 @@ app.get('/status', (req, res) => {
 app.post('/auth/sign-up', usersController.createNewUser);
 app.post('/auth/login', usersController.signIn);
 
-app.get('/habits');
+app.get('/habits', validateToken, habitsController.getHabits);
 app.post('/habits', validateToken, habitsController.createNewHabit);
 app.delete('/habits/:habitId');
 

@@ -16,6 +16,18 @@ async function createNewHabit(req, res) {
     }
 }
 
+async function getHabits(req, res) {
+    try {
+        const userId = res.locals.user.id;
+        const userHabits = await habitsService.getUserHabits({ userId });
+        return res.send(userHabits);
+    } catch (error) {
+        console.error(error);
+        return res.sendStatus(500);
+    }
+}
+
 export {
     createNewHabit,
+    getHabits,
 };

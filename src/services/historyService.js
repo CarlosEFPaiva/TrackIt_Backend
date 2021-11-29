@@ -47,6 +47,9 @@ function updateHistory(userHabits) {
             habitsToUpdate.push({ id: habit.id, dueDates });
         }
     });
+    if (!habitsToUpdate.length) {
+        return '';
+    }
     return historyRepository.addNewHistories(habitsToUpdate);
 }
 

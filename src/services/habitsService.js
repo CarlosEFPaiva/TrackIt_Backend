@@ -14,6 +14,12 @@ async function createNewHabit({ userId, name, days }) {
     };
 }
 
+async function getUserHabits({ userId }) {
+    const userHabits = await habitsRepository.getHabits({ userId });
+    return userHabits.map(({ id, name, days }) => ({ id, name, days }));
+}
+
 export {
     createNewHabit,
+    getUserHabits,
 };
