@@ -30,7 +30,7 @@ CREATE TABLE "habits" (
 	"delete_date" DATE,
 	"current_sequence" integer NOT NULL,
 	"highest_sequence" integer NOT NULL,
-	"history_last_update" DATE NOT NULL,
+	"history_last_update" DATE,
 	CONSTRAINT "habits_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -42,7 +42,7 @@ CREATE TABLE "history" (
 	"id" serial NOT NULL,
 	"habit_id" integer NOT NULL,
 	"date" DATE NOT NULL,
-	"done" BOOLEAN NOT NULL,
+	"done" BOOLEAN NOT NULL DEFAULT false,
 	CONSTRAINT "history_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE

@@ -19,7 +19,7 @@ async function createNewUser({ name, email, password, image }) {
     });
 }
 
-async function getUserToken({ email, password }) {
+async function getUserData({ email, password }) {
     const lowerCaseEmail = email.toLowerCase();
     const savedUser = (await usersRepository.getUser({ email: lowerCaseEmail }));
     if (!savedUser) {
@@ -30,10 +30,14 @@ async function getUserToken({ email, password }) {
     }
     const token = generateToken();
     await sessionsRepository.insertNewSession({ userId: savedUser.id, token });
-    return token;
+    delete savedUser.password;
+    return {
+        ...savedUser,
+        token,
+    };
 }
 
 export {
     createNewUser,
-    getUserToken,
+    getUserData,
 };

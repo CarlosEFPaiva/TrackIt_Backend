@@ -29,11 +29,11 @@ async function signIn(req, res) {
         return res.status(400).send('Error with inputs validation');
     }
     try {
-        const token = await usersService.getUserToken({ email, password });
-        if (!token) {
+        const userData = await usersService.getUserData({ email, password });
+        if (!userData) {
             return res.status(401).send('Email and/or password are incorrect');
         }
-        return res.send({ token });
+        return res.send(userData);
     } catch (error) {
         console.error(error);
         return res.sendStatus(500);
