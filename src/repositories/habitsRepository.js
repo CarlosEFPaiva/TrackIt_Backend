@@ -26,7 +26,7 @@ async function getHabits({ habitId, userId }) {
             habit_days.weekday
         FROM habits
         JOIN habit_days ON habit_days.habit_id = habits.id) AS aux
-        WHERE 1=1`;
+        WHERE aux."deleteDate" IS NULL `;
 
     if (habitId) {
         queryArray.push(habitId);
@@ -48,7 +48,10 @@ async function getHabits({ habitId, userId }) {
         "currentSequence",
         "highestSequence",
         "historyLastUpdate";`;
-    return (await connection.query(queryText, queryArray)).rows;
+    const habits = (await connection.query(queryText, queryArray)).rows;
+
+    if (habitId) return habits[0];
+    return habits;
 }
 
 async function createNewHabit({ userId, name, days, today }) {
@@ -100,8 +103,34 @@ function updateHabitsHistory(habits, today) {
     return connection.query(`${queryText};`, [today, ...queryParams]);
 }
 
+async function deleteHabit(habitId) {
+    const result = await connection.query(`
+    WITH deletedHabitDays AS (
+        DELETE FROM habit_days
+        WHERE
+            habit_id = $1
+    )
+    DELETE FROM habits
+        WHERE
+            id = $1
+    RETURNING *;`, [habitId]);
+    return result.rowCount;
+}
+
+async function addDeleteDate({ habitId, today }) {
+    const result = await connection.query(`
+    UPDATE habits
+    SET delete_date = $1
+    WHERE
+        id = $2
+    RETURNING *;`, [today, habitId]);
+    return result.rowCount;
+}
+
 export {
     getHabits,
     createNewHabit,
     updateHabitsHistory,
+    deleteHabit,
+    addDeleteDate,
 };

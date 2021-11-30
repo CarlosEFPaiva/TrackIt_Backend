@@ -27,7 +27,24 @@ async function getHabits(req, res) {
     }
 }
 
+async function deleteHabit(req, res) {
+    const { habitId } = req.params;
+    if (!isValid.habitId(habitId)) {
+        return res.status(400).send('Error with Id validation');
+    }
+    try {
+        const userId = res.locals.user.id;
+        const wasHabitDeleted = await habitsService.deleteHabit({ userId, habitId });
+        if (!wasHabitDeleted) return res.sendStatus(404);
+        return res.sendStatus(200);
+    } catch (error) {
+        console.error(error);
+        return res.sendStatus(500);
+    }
+}
+
 export {
     createNewHabit,
     getHabits,
+    deleteHabit,
 };

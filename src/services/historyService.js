@@ -53,6 +53,12 @@ function updateHistory(userHabits) {
     return historyRepository.addNewHistories(habitsToUpdate);
 }
 
+function eraseTodaysHabitHistory(habitId) {
+    const today = new Date();
+    return historyRepository.deleteTodaysHabitHistory({ habitId, today });
+}
+
 export {
     updateHistory,
+    eraseTodaysHabitHistory,
 };

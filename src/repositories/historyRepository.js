@@ -23,6 +23,17 @@ function addNewHistories(habitsToUpdate) {
     return connection.query(`${queryText} RETURNING *;`, queryParams);
 }
 
+function deleteTodaysHabitHistory({ habitId, today }) {
+    return connection.query(`
+        DELETE FROM history
+        WHERE
+            habit_id = $1
+        AND
+            date = $2
+    ;`, [habitId, today]);
+}
+
 export {
     addNewHistories,
+    deleteTodaysHabitHistory,
 };

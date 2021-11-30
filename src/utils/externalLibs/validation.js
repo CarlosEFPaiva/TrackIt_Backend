@@ -38,9 +38,15 @@ function token(uuid) {
     return !(schema.validate(uuid)).error;
 }
 
+function habitId(number) {
+    const schema = joi.number().required().min(1);
+    return !(schema.validate(number)).error;
+}
+
 export {
     signUp,
     signIn,
     newHabit,
     token,
+    habitId,
 };

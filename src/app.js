@@ -18,7 +18,7 @@ app.post('/auth/login', usersController.signIn);
 
 app.get('/habits', validateToken, habitsController.getHabits);
 app.post('/habits', validateToken, habitsController.createNewHabit);
-app.delete('/habits/:habitId');
+app.delete('/habits/:habitId', validateToken, habitsController.deleteHabit);
 
 app.get('/habits/today');
 app.get('/habits/today/daily');
